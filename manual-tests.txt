@@ -61,13 +61,14 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
-# Module 4: Ignoring non-numerical input
+# Module 4: Constraining input length
 
-## Test Steps
+## Test steps
 1. Build and run CiCo
-2. Enter abcd
+2. Enter "00000000"
+3. Attempt to enter a ninth "0"
 
-## Expected results
-The program should ignore the character input and only accept numbers.
+## Expected Results
+The program should prevent the user from entering a ninth character.
 
 
