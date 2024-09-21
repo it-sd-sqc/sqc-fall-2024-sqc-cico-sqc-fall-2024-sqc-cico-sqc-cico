@@ -61,7 +61,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
-# Module 4: Valid input
+# Module 4: Valid input (Ticket 1)
 
 # Test for alphabetical input being valid
 
