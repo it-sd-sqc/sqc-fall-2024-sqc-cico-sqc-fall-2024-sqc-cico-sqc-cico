@@ -1,0 +1,9 @@
+## test non-numerical input
+1. Build and run CiCo.
+2. Type abcd into the field.
+
+## Expected results:
+* expected output should be nothing.
+
+## Output was
+abcd
