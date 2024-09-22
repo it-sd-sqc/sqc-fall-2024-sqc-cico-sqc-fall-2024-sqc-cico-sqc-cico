@@ -7,3 +7,32 @@
 
 ## Output was
 abcd
+
+### test non-numerical input
+1. Build and run CiCo.
+2. Type abcd into the field.
+
+## Expected results:
+* expected output should be nothing.
+
+## Output was as expected
+
+### test Numerical input
+1. Build and run CiCo.
+2. Type 0123456789 into the field.
+
+## Expected results:
+* expected output should be 0123456789.
+
+## Output was as expected
+
+### test Developer input
+1. Build and run CiCo.
+2. Enter 00000000 into the field and click Update.
+3. Wait for status panel to close.
+4. Enter 00000000 into the field and click Update.
+
+## Expected results
+* Should display "Developer" for the user name.
+* Should display "Checked IN" after step 2.
+* Should display "Checked OUT" after step 4.
