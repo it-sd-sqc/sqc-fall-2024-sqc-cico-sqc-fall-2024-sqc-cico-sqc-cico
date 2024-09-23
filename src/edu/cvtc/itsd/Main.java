@@ -39,28 +39,37 @@ public class Main {
 
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+            throws BadLocationException {
+        if (fb.getDocument() != null) {
+            if (stringToAdd != null && stringToAdd.matches("\\d*") && (fb.getDocument().getLength() + stringToAdd.length() <= MAX_LENGTH)) {
+                super.insertString(fb, offset, stringToAdd, attr);
+            } else {
+                Toolkit.getDefaultToolkit().beep(); // Alert for invalid input
+            }
+        } else {
+            Toolkit.getDefaultToolkit().beep(); // Beep if the document is null
+        }
     }
 
     @Override
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+            throws BadLocationException {
+        if (fb.getDocument() != null) {
+            if (stringToAdd != null && stringToAdd.matches("\\d*")) {
+                int currentLength = fb.getDocument().getLength();
+                int newLength = currentLength - lengthToDelete + stringToAdd.length();
+
+                if (newLength <= MAX_LENGTH) {
+                    super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+                } else {
+                    Toolkit.getDefaultToolkit().beep(); // Alert for exceeding max length
+                }
+            }
+        } else {
+            Toolkit.getDefaultToolkit().beep(); // Beep if the document is null
+        }
     }
-  }
+}
 
   // Lookup the card information after button press ///////////////////////////
   public static class Update implements ActionListener {
