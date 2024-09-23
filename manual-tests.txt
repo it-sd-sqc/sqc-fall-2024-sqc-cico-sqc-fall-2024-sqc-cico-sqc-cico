@@ -61,4 +61,10 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
-
+Test ID: 1
+Description: Validate card input only accepts numerical characters.
+Steps to Execute:
+1. Start the CiCo application.
+2. Enter 'abcd' into the card number field.
+3. Observe the characters displayed in the field.
+Expected Result: The field should not display 'abcd'; it should ignore non-numerical input.
