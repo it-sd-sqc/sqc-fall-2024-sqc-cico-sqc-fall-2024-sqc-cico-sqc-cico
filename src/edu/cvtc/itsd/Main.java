@@ -289,6 +289,13 @@ public class Main {
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
 
+    buttonAcknowledge = new JButton("Return to login screen");
+    buttonAcknowledge.setFont(fontMain);
+    buttonAcknowledge.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    buttonAcknowledge.addActionListener(handler);
+    buttonAcknowledge.setForeground(Color.black);
+    panelStatus.add(buttonAcknowledge);
+    
     panelStatus.add(Box.createVerticalGlue());
 
     // Error panel ////////////////////////////////////////////////////////////
