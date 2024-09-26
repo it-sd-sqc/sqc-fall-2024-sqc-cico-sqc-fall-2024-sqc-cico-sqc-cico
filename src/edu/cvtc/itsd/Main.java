@@ -37,11 +37,16 @@ public class Main {
   private static class InputFilter extends DocumentFilter {
     private static final int MAX_LENGTH = 8;
 
+
+    private boolean isNumericInput(String str) {
+      return str.matches("[0-9]*"); // This is a Regular expression to allow only digits
+    }
+
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      if (fb.getDocument() != null && isNumericInput(stringToAdd)) {
         super.insertString(fb, offset, stringToAdd, attr);
       }
       else {
@@ -53,7 +58,7 @@ public class Main {
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      if (fb.getDocument() != null && isNumericInput(stringToAdd)) {
         super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
       }
       else {
