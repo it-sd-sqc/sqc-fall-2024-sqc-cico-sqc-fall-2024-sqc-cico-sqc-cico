@@ -10,6 +10,6 @@ pushd src/
       CP=$CP_WINDOWS
     ;;
   esac
-  java -cp $CP edu/cvtc/itsd/Main
+  java -cp $CP edu/cvtc/itsd/Main.java
 popd
 
