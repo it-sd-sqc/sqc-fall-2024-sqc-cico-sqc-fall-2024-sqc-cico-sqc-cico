@@ -103,6 +103,7 @@ public class Main {
     }
   }
 
+
   // Called when closing the application //////////////////////////////////////
   public static class OnShutdown implements Runnable {
     public void run() {
@@ -308,6 +309,14 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
+
+    buttonAcknowledge = new JButton("Exit");
+    buttonAcknowledge.addActionListener(handler);
+    buttonAcknowledge.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    buttonAcknowledge.setForeground(Color.red);
+    panelStatus.add(buttonAcknowledge);
+    panelStatus.add(Box.createVerticalGlue());
+
 
     panelStatus.add(Box.createVerticalGlue());
 

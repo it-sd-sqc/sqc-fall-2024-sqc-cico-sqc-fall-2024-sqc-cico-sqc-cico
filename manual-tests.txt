@@ -11,6 +11,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * The status panel should appear after step 2.
 * The main panel should appear after step 3.
 
+
 # Module 2: Sample test for invalid card numbers.
 
 ## Test steps
@@ -22,6 +23,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * The error panel should appear after step 2.
 * The main panel should appear after step 3.
 
+
 # Module 2: Help users recognize, diagnose, and recover from errors
 
 ## Test steps
@@ -30,6 +32,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 
 ## Expected results
 * The panel should display "Please show your card to staff to validate." after step 2.
+
 
 # Module 2: Help and documentation
 
@@ -52,6 +55,7 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * Should display "Checked IN" after step 2.
 * Should display "Checked OUT" after step 4.
 
+
 # Module 3: Match between system and the real world
 
 ## Test steps
@@ -59,7 +63,32 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 2. Enter 00000000 into the field and click Update.
 
 ## Expected results
-* Should display "Developer" for the user name.
+* Should display "Developer" for the username.
+
+
+# Module 4: Valid input (Ticket 1)
+
+# Test for alphabetical input being valid
+
+## Test steps
+1. Run CiCo
+2. Enter "abcd"
+
+## Expected results
+* The program shouldn't except letters as valid input and the field should remain blank.
+
+
+# Module 5: Exit button (Ticket 1)
+
+# Test for the addition of an exit button
+
+## Test steps
+1. Run CiCo
+2. Enter 00000000 into the field and click update.
+
+## Expected results
+* The program should display an exit button for users to click to bypass the timeout time for a new user to sign in.
+
 
 # Module 4: Valid input (Ticket 1)
 
