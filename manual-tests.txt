@@ -68,3 +68,9 @@ Steps to Execute:
 2. Enter 'abcd' into the card number field.
 3. Observe the characters displayed in the field.
 Expected Result: The field should not display 'abcd'; it should ignore non-numerical input.
+
+Manual Test for Button to Reduce Timeout:
+1. Scan a card to initiate the checkout process.
+2. Verify that the timeout process starts (e.g., a timer is displayed).
+3. Click the "Next" button to skip the timeout.
+4. Verify that the application proceeds to the next step immediately after clicking the button.
