@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.TimerTask;
+import javax.print.Doc;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.*;
@@ -41,7 +42,12 @@ public class Main {
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      Document doc = fb.getDocument();
+      StringBuilder sb = new StringBuilder();
+      sb.append(doc.getText(0, doc.getLength()));
+      sb.insert(offset, stringToAdd);
+
+      if (fb.getDocument() != null && isInt(sb.toString())) {
         super.insertString(fb, offset, stringToAdd, attr);
       }
       else {
@@ -49,11 +55,25 @@ public class Main {
       }
     }
 
+    private boolean isInt(String str) {
+      try {
+        Integer.parseInt(str);
+        return true;
+      } catch (NumberFormatException e) {
+        return false;
+      }
+    }
+
     @Override
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      Document doc = fb.getDocument();
+      StringBuilder sb = new StringBuilder();
+      sb.append(doc.getText(0, doc.getLength()));
+      sb.replace(offset, offset + lengthToDelete, stringToAdd);
+
+      if (fb.getDocument() != null && isInt(sb.toString())) {
         super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
       }
       else {
@@ -82,6 +102,7 @@ public class Main {
       Main.doneProcessing();
     }
   }
+
 
   // Called when closing the application //////////////////////////////////////
   public static class OnShutdown implements Runnable {
@@ -288,6 +309,14 @@ public class Main {
     labelState.setAlignmentX(JComponent.CENTER_ALIGNMENT);
     labelState.setForeground(Color.magenta);
     panelStatus.add(labelState);
+
+    buttonAcknowledge = new JButton("Exit");
+    buttonAcknowledge.addActionListener(handler);
+    buttonAcknowledge.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    buttonAcknowledge.setForeground(Color.red);
+    panelStatus.add(buttonAcknowledge);
+    panelStatus.add(Box.createVerticalGlue());
+
 
     panelStatus.add(Box.createVerticalGlue());
 
