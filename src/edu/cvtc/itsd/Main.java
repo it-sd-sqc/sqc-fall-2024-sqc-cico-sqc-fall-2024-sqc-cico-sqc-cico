@@ -210,8 +210,10 @@ public class Main {
 
   // Return to the main panel /////////////////////////////////////////////////
   private static void doneProcessing() {
-    timeout.cancel();
-    timeout = null;
+    if (timeout != null) {
+      timeout.cancel();
+      timeout = null;
+    }
     fieldNumber.setText("");
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
@@ -274,6 +276,21 @@ public class Main {
     updateButton.addActionListener(new Update());
     updateButton.setForeground(Color.green);
     panelMain.add(updateButton);
+    
+    // Add bypass button to skip timeout
+    JButton bypassButton = new JButton("Next");
+    bypassButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    bypassButton.setForeground(Color.green);
+    bypassButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Stop the timeout and transition to the next state
+            doneProcessing();
+            // You may also transition directly to the status panel if needed
+            // ((CardLayout)deck.getLayout()).show(deck, CARD_STATE);
+        }
+    });
+    
+    panelMain.add(bypassButton);  // Add the bypass button below the update button
 
     panelMain.add(Box.createVerticalGlue());
 
