@@ -62,3 +62,14 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 * Should display "Developer" for the user name.
 
 
+# Module 4: Constrain input to card number length
+
+## Test steps
+1. Build and run CiCo.
+2. Enter 0000 into the field and click Update.
+3. Wait for status panel to close.
+4. Enter 000000000 into the field and click Update.
+
+## Expected results
+* Should not allow input of less than 8 characters in step 2 and should "beep" in response to trying to Update.
+* Should not allow input of more than 8 characters in step 4 and should "beep" in response to trying.
