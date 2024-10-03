@@ -78,3 +78,12 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 
 ## Expected results
 * Should display "Clean shutdown" in the terminal window.
+
+# Module 6: Automatically submit on 8th digit
+
+## Test steps
+1. Build and run CiCo
+2. Enter 00000000
+
+## Expected results
+* Should automatically submit and log in.
