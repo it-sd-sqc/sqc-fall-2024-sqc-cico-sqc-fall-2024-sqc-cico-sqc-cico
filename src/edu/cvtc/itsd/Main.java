@@ -43,6 +43,7 @@ public class Main {
     {
       if (isValidInput(stringToAdd) && fb.getDocument() != null) {
         super.insertString(fb, offset, stringToAdd, attr);
+        checkForCharLimit(fb);
       }
       else {
         Toolkit.getDefaultToolkit().beep();
@@ -55,6 +56,7 @@ public class Main {
     {
       if (isValidInput(stringToAdd) && fb.getDocument() != null) {
         super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+        checkForCharLimit(fb);
       }
       else {
         Toolkit.getDefaultToolkit().beep();
@@ -69,6 +71,13 @@ public class Main {
         }
       }
       return true;
+    }
+
+    // Module 6 ticket: Limit input to 8 characters.
+    private void checkForCharLimit(FilterBypass fb){
+      if (fb.getDocument().getLength() >= MAX_LENGTH) {
+        Main.processCard();
+      }
     }
 
   }
@@ -272,12 +281,6 @@ public class Main {
     fieldNumber.setBackground(Color.green);
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
-
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
 
     panelMain.add(Box.createVerticalGlue());
 
