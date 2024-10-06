@@ -8,6 +8,8 @@ import java.sql.*;
 import java.util.TimerTask;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
 // CiCo application's primary class ///////////////////////////////////////////
@@ -41,10 +43,16 @@ public class Main {
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
+      if (stringToAdd == null) {
+        return;
       }
-      else {
+
+      String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+      String newText = currentText.substring(0, offset) + stringToAdd + currentText.substring(offset);
+
+      if (newText.length() <= MAX_LENGTH && newText.matches("\\d*")){
+        super.insertString(fb, offset, stringToAdd, attr);
+      } else {
         Toolkit.getDefaultToolkit().beep();
       }
     }
@@ -53,7 +61,14 @@ public class Main {
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
+      if (stringToAdd == null) {
+        return;
+      }
+
+      String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+      String newText = currentText.substring(0, offset) + stringToAdd + currentText.substring(offset + lengthToDelete);
+
+      if (newText.length() <= MAX_LENGTH && newText.matches("\\d*")){
         super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
       }
       else {
@@ -61,13 +76,40 @@ public class Main {
       }
     }
   }
+  private static class CardNumberListener implements DocumentListener {
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        checkLength(e);
+    }
 
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        // No action needed on remove
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        // No action needed on change
+    }
+
+    private void checkLength(DocumentEvent e) {
+      try {
+        String text = e.getDocument().getText(0, e.getDocument().getLength());
+        if (text.length() == InputFilter.MAX_LENGTH) {
+        Main.processCard(); // Call the method to process the card
+        }
+      } catch (BadLocationException ex) {
+        ex.printStackTrace();
+      }
+    }
+  }
   // Lookup the card information after button press ///////////////////////////
   public static class Update implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
       Main.processCard();
     }
   }
+  
 
   // Revert to the main panel after a button press ////////////////////////////
   public static class Handler implements ActionListener {
@@ -171,6 +213,8 @@ public class Main {
     }
   }
 
+
+  
   // Display errors to users //////////////////////////////////////////////////
   private static void showError(int code) {
     // Module 2 ticket: Show human-readable error messages.
@@ -199,6 +243,8 @@ public class Main {
     }
   }
 
+
+  
   // Return to the main panel /////////////////////////////////////////////////
   private static void doneProcessing() {
     timeout.cancel();
@@ -207,6 +253,12 @@ public class Main {
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
   }
+  public static class NewFeatureHandler implements ActionListener {
+    public void actionPerformed(ActionEvent evt) {
+        // Implement the action for the new feature here
+        JOptionPane.showMessageDialog(deck, "you are logged out");
+    }
+}
 
   // Display name and new status //////////////////////////////////////////////
   // Module 3 tickets: Display user name and new status. Doesn't require a
@@ -215,6 +267,9 @@ public class Main {
     labelUser.setText(name);
     labelState.setText(isCheckedInNow ? "Checked IN" : "Checked OUT");
   }
+
+
+ 
 
   // Entry point //////////////////////////////////////////////////////////////
   // Our GUI code is very similar; however, we want to keep it explicit.
@@ -231,6 +286,8 @@ public class Main {
     frame.setPreferredSize(new Dimension(640, 480));
     frame.setMaximumSize(new Dimension(640, 480));
 
+  
+
     // Collect each "card" panel in a deck.
     deck = new JPanel(new CardLayout());
     Font fontMain = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
@@ -242,7 +299,7 @@ public class Main {
     panelMain.setPreferredSize(new Dimension(640, 480));
     panelMain.setMaximumSize(new Dimension(640, 480));
     panelMain.setBackground(Color.black);
-
+    //panelMain.add(buttonNewFeature); // Add the new button to the main panel
     panelMain.add(Box.createVerticalGlue());
     JLabel labelDirective = new JLabel("Scan card", JLabel.LEADING);
     labelDirective.setFont(fontMain);
@@ -253,6 +310,7 @@ public class Main {
     fieldNumber = new JTextField();
     InputFilter filter = new InputFilter();
     ((AbstractDocument)(fieldNumber.getDocument())).setDocumentFilter(filter);
+    fieldNumber.getDocument().addDocumentListener(new CardNumberListener());
     fieldNumber.setPreferredSize(new Dimension(200, 32));
     fieldNumber.setMaximumSize(new Dimension(200, 32));
     fieldNumber.setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -260,14 +318,7 @@ public class Main {
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
 
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
-
-    panelMain.add(Box.createVerticalGlue());
-
+  
     // Status panel ///////////////////////////////////////////////////////////
     JPanel panelStatus = new JPanel();
     panelStatus.setLayout(new BoxLayout(panelStatus, BoxLayout.PAGE_AXIS));
