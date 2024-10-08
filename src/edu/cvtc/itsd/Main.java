@@ -35,7 +35,7 @@ public class Main {
   // Internal classes ///////////////////////////////////////////////////////////
   // InputFilter manages user input to the card number field.
   private static class InputFilter extends DocumentFilter {
-    private static final int MAX_LENGTH = 8;
+    private static final int MAX_LENGTH = 8; // Adjust based on requirements
 
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
@@ -43,11 +43,14 @@ public class Main {
         if (fb.getDocument() != null) {
             if (stringToAdd != null && stringToAdd.matches("\\d*") && (fb.getDocument().getLength() + stringToAdd.length() <= MAX_LENGTH)) {
                 super.insertString(fb, offset, stringToAdd, attr);
+                // Check if the input length has reached the maximum length
+                if (fb.getDocument().getLength() + stringToAdd.length() == MAX_LENGTH) {
+                    // Automatically process the card
+                    Main.processCard();
+                }
             } else {
                 Toolkit.getDefaultToolkit().beep(); // Alert for invalid input
             }
-        } else {
-            Toolkit.getDefaultToolkit().beep(); // Beep if the document is null
         }
     }
 
@@ -61,12 +64,15 @@ public class Main {
 
                 if (newLength <= MAX_LENGTH) {
                     super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+                    // Check again if we've reached the max length after replacement
+                    if (newLength == MAX_LENGTH) {
+                        // Automatically process the card
+                        Main.processCard();
+                    }
                 } else {
                     Toolkit.getDefaultToolkit().beep(); // Alert for exceeding max length
                 }
             }
-        } else {
-            Toolkit.getDefaultToolkit().beep(); // Beep if the document is null
         }
     }
 }

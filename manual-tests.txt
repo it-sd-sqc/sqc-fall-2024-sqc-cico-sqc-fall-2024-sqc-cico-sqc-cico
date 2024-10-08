@@ -74,3 +74,9 @@ Manual Test for Button to Reduce Timeout:
 2. Verify that the timeout process starts (e.g., a timer is displayed).
 3. Click the "Next" button to skip the timeout.
 4. Verify that the application proceeds to the next step immediately after clicking the button.
+
+Test Case: Auto-submit Card Number
+1. Open the application.
+2. In the card number input field, enter 4 digits (e.g., 1234).
+3. Verify that the form is submitted automatically after the last digit is entered.
+4. Verify that no submit button is present.
