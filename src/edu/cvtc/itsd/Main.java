@@ -35,32 +35,47 @@ public class Main {
   // Internal classes ///////////////////////////////////////////////////////////
   // InputFilter manages user input to the card number field.
   private static class InputFilter extends DocumentFilter {
-    private static final int MAX_LENGTH = 8;
+    private static final int MAX_LENGTH = 8; // Adjust based on requirements
 
     @Override
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+            throws BadLocationException {
+        if (fb.getDocument() != null) {
+            if (stringToAdd != null && stringToAdd.matches("\\d*") && (fb.getDocument().getLength() + stringToAdd.length() <= MAX_LENGTH)) {
+                super.insertString(fb, offset, stringToAdd, attr);
+                // Check if the input length has reached the maximum length
+                if (fb.getDocument().getLength() + stringToAdd.length() == MAX_LENGTH) {
+                    // Automatically process the card
+                    Main.processCard();
+                }
+            } else {
+                Toolkit.getDefaultToolkit().beep(); // Alert for invalid input
+            }
+        }
     }
 
     @Override
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
-      }
+            throws BadLocationException {
+        if (fb.getDocument() != null) {
+            if (stringToAdd != null && stringToAdd.matches("\\d*")) {
+                int currentLength = fb.getDocument().getLength();
+                int newLength = currentLength - lengthToDelete + stringToAdd.length();
+
+                if (newLength <= MAX_LENGTH) {
+                    super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+                    // Check again if we've reached the max length after replacement
+                    if (newLength == MAX_LENGTH) {
+                        // Automatically process the card
+                        Main.processCard();
+                    }
+                } else {
+                    Toolkit.getDefaultToolkit().beep(); // Alert for exceeding max length
+                }
+            }
+        }
     }
-  }
+}
 
   // Lookup the card information after button press ///////////////////////////
   public static class Update implements ActionListener {
@@ -201,8 +216,10 @@ public class Main {
 
   // Return to the main panel /////////////////////////////////////////////////
   private static void doneProcessing() {
-    timeout.cancel();
-    timeout = null;
+    if (timeout != null) {
+      timeout.cancel();
+      timeout = null;
+    }
     fieldNumber.setText("");
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
@@ -259,12 +276,21 @@ public class Main {
     fieldNumber.setBackground(Color.green);
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
-
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
+    
+    // Add bypass button to skip timeout
+    JButton bypassButton = new JButton("Next");
+    bypassButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    bypassButton.setForeground(Color.green);
+    bypassButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Stop the timeout and transition to the next state
+            doneProcessing();
+            // You may also transition directly to the status panel if needed
+            // ((CardLayout)deck.getLayout()).show(deck, CARD_STATE);
+        }
+    });
+    
+    panelMain.add(bypassButton);  // Add the bypass button below the update button
 
     panelMain.add(Box.createVerticalGlue());
 

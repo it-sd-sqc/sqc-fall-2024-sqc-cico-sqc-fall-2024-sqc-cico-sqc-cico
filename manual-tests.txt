@@ -61,4 +61,22 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+Test ID: 1
+Description: Validate card input only accepts numerical characters.
+Steps to Execute:
+1. Start the CiCo application.
+2. Enter 'abcd' into the card number field.
+3. Observe the characters displayed in the field.
+Expected Result: The field should not display 'abcd'; it should ignore non-numerical input.
 
+Manual Test for Button to Reduce Timeout:
+1. Scan a card to initiate the checkout process.
+2. Verify that the timeout process starts (e.g., a timer is displayed).
+3. Click the "Next" button to skip the timeout.
+4. Verify that the application proceeds to the next step immediately after clicking the button.
+
+Test Case: Auto-submit Card Number
+1. Open the application.
+2. In the card number input field, enter 4 digits (e.g., 1234).
+3. Verify that the form is submitted automatically after the last digit is entered.
+4. Verify that no submit button is present.
