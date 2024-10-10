@@ -61,4 +61,23 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 ## Expected results
 * Should display "Developer" for the user name.
 
+# Module 4: Constraining input length
+
+## Test steps
+1. Build and run CiCo
+2. Enter "00000000"
+3. Attempt to enter a ninth "0"
+
+## Expected Results
+The program should prevent the user from entering a ninth character.
+
+# Module 5: 
+## Test steps
+1. Build and run CiCo
+2. Enter "00000000"
+3. Press the update button
+4. On the screen showing the employee and status, press the button saying "return to login screen"
+
+## Expected Results
+The program should return to the login screen, bypassing need to wait for the timeout. But the timeout should still work.
 
